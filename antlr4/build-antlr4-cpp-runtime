@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e #automatically exit on non-zero status
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SRC_DIR=$SCRIPT_DIR/src
+INSTALL_DIR=$SCRIPT_DIR/run
+BUILD_DIR=$SCRIPT_DIR/build
+
+
+ANTLR4_JAR_PATH=$SCRIPT_DIR/antlr-4.6-complete.jar
+echo $SCRIPT_DIR
+
+cd $SRC_DIR
+
+echo Building...
+mkdir -p $BUILD_DIR
+cd $BUILD_DIR
+cmake $SRC_DIR -DANTLR_JAR_LOCATION=$ANTLR4_JAR_PATH -DWITH_DEMO=True
+make
+mkdir -p $INSTALL_DIR
+DESTDIR=$INSTALL_DIR make install
+
+

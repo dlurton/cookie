@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e #automatically exit on non-zero status
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+SRC_DIR=$SCRIPT_DIR
+BUILD_DIR=$SCRIPT_DIR/build
+
+if [ ! -d $SCRIPT_DIR/antlr4/run ] ; then
+    echo "Detected that $SRC_DIR/antlr4/run does not exist, meaning that the ANTLR4 C++ runtime has not been built."
+    echo "Attempting to build it for you now."
+    $SRC_DIR/antlr4/build-antlr4-cpp-runtime
+fi
+
+
+ANTLR4_JAR_PATH=$SCRIPT_DIR/antlr-4.6-complete.jar
+echo $SCRIPT_DIR
+
+cd $SRC_DIR
+
+echo Building...
+mkdir -p $BUILD_DIR
+cd $BUILD_DIR
+cmake $SRC_DIR
+make
+
+
